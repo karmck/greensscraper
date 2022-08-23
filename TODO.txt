@@ -1,37 +1,5 @@
-Table pre-pend:
+- Add last updated
 
-----------------------
-<!DOCTYPE html>
-<html lang="en">
+- Wrap URLs with hrefs
 
-<head>
-    <meta charset="utf-8">
-    <title>Example of Setting Table Borders</title>
-    <style>
-        table,
-        th,
-        td {
-            border: 1px solid black;
-        }
-    </style>
-    
-    <script src="docs/sorttable.js"></script>
-
-</head>
-
-<body>
-    Last updated 23 August 2022 12:25<br><br>
-    Click on column name to sort ;-) <br><br>
-
-----------------------
-
-    FIRST LINE : <table class="table table-bordered table-hover table-condensed">
-    Use regex to replace table-condensed"> with table-condensed sortable">
-
-----------------------
-
-Table append:
-
-</body>
-
-</html>
+- Make columns sortable with bootsrap
