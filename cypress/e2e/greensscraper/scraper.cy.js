@@ -71,10 +71,10 @@ describe('Collecting Data', () => {
               })
 
 
-              // cy.task('log',JSON.stringify(items));
+              cy.task('log',"All items collected: "+JSON.stringify(items));
 
-
-
+              //write all collected items to disk to this point after collecting the items from the current page
+              cy.writeFile('docs/data.json', JSON.stringify(items));    
 
 
             }
@@ -93,8 +93,7 @@ describe('Collecting Data', () => {
 
     }
 
-    //write json to disk after collecting all the items   
-    cy.writeFile('docs/data.json', JSON.stringify(items));
+
 
   }
 
