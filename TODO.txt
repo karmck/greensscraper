@@ -14,6 +14,9 @@ Table pre-pend:
             border: 1px solid black;
         }
     </style>
+    
+    <script src="sorttable.js"></script>
+
 </head>
 
 <body>
@@ -29,7 +32,6 @@ Table pre-pend:
 
 Table append:
 
-    <script src="sorttable.js"></script>
 </body>
 
 </html>

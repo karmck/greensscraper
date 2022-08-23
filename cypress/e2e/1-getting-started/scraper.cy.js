@@ -80,7 +80,7 @@ describe('Collecting Data', () => {
 
               }
               //write json to disk    
-              cy.writeFile('cypress/downloads/data.json', JSON.stringify(items));
+              cy.writeFile('cypress/data/data.json', JSON.stringify(items));
 
             });
 
@@ -93,11 +93,12 @@ describe('Collecting Data', () => {
 
     }
 
+    //download PDF
     cy.forceVisit("https://www.convertjson.com/json-to-html-table.htm")
 
 
     cy
-      .readFile('cypress/downloads/data.json')
+      .readFile('cypress/data/data.json')
       .then((str) => {
 
         //paste json into textarea
