@@ -1,6 +1,6 @@
 Table pre-pend:
 
---------------------
+----------------------
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,3 +33,10 @@ Table append:
 </body>
 
 </html>
+
+
+----------------------
+
+Push downloads folder to gh-pages branch
+
+git subtree push --prefix cypress/downloads/ origin gh-pages
