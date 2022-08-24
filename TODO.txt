@@ -3,5 +3,3 @@
 - Make columns sortable with bootsrap
 
 - Git push data and index file after running the scraper
-
-- Get bearer token on first page and use API instead of scraping all pages

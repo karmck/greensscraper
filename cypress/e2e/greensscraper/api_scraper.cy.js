@@ -1,0 +1,94 @@
+describe('Scrape Super Saver items via API', () => {
+
+  let items = [];
+  let pagesToScrape = 30;
+
+  it('gets the token', () => {
+
+    cy.visit('https://www.greens.com.mt');
+    cy.get(".country").contains("Malta").click({ force: true });
+    cy.intercept('**/retail/**').as('products');
+
+    cy.visit('https://www.greens.com.mt/products?cat=winecellar')
+      .wait('@products', { timeout: 20000 })
+      .then((xhr) => {
+
+        let authHeader = JSON.stringify(xhr.request.headers.authorization).split(" ")[1].split('"')[0];
+
+        Cypress.env('bearerToken', authHeader)
+
+      });
+
+  })
+
+  it('scrapes super saver products', () => {
+
+    for (let page = 1; page <= pagesToScrape; page++) {
+
+      let authHeader = Cypress.env('bearerToken')
+
+      const options = {
+        method: 'GET',
+        url: `https://www.greens.com.mt/apiservices/retail/sync/productlist?Agent=GREENS&Loc=SM&Eid=N/A&SearchCriteria=&page=` + (page) + `&NumberOfRecords=100&SortType=Price&SortDirection=Asc&Category=winecellar&Category2=&Category3=&Type=&Cid=&Cart=&SubType=&Brand=&ProductListType=products&Mobdev=False&Detailed=True`,
+        headers: {
+          'Authorization': 'Bearer ' + authHeader,
+        }
+      };
+
+      cy.request(options)
+        .then((response) => {
+          expect(response.status).to.equal(200);
+
+          let json = response.body;
+          var productCount = Object.keys(json.ProductList).length;
+
+          for (let i = 0; i < productCount; i++) {
+
+            if (json.ProductList[i].OfferType == "Super Saver") {
+
+              let category = json.ProductList[i].ProductDetails.GROUP_3;
+              let title = json.ProductList[i].ProductDetails.PART_DESCRIPTION;
+              let normalPrice = json.ProductList[i].ProductDetails.SALES_PRICE_RRP;
+              let offerText = json.ProductList[i].OfferText;
+              let link = "http://www.greens.com.mt/" + "productdetails?pid=" + json.ProductList[i].ProductDetails.PART_NUMBER;
+              link = "<a href='" + link + "' target='_blank'>Product Page</a>"
+
+              //calculate percentage discount off
+              let discountString = offerText.match(/\€ \d+(\.\d{1,2})?/gm)[0];
+              let discount = discountString.split("€ ")[1];
+              let percentageDiscount = (100 - ((normalPrice - discount) / normalPrice) * 100).toFixed(2);
+
+              //calculate actual price
+              let actualPrice = (normalPrice - discount).toFixed(2);
+
+              //calculate savings
+              let savings = (normalPrice - actualPrice).toFixed(2);
+
+              //push to items object
+              items.push({
+                Category: category,
+                Title: title,
+                NormalPrice: normalPrice,
+                DiscountPercent: percentageDiscount,
+                ActualPrice: actualPrice,
+                Savings: savings,
+                Link: link,
+              })
+
+            }
+          }
+
+        })
+        .then(() => {
+
+          cy.task('log', items.length + " items collected in total after page " + page);
+          cy.task('log', "Writing " + items.length + " items to file after page " + page);
+          cy.writeFile('docs/data.json', JSON.stringify(items));
+
+        });
+
+    }
+
+
+  })
+});
