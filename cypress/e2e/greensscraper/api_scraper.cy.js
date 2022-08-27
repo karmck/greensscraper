@@ -26,7 +26,7 @@ describe('Scrape Super Saver items via API', () => {
     let pagesToScrape = 30;
     let pageEnd = false;
 
-    for (let page = 1; page <= pagesToScrape && !pageEnd; page++) {
+    for (let page = 1; (page <= pagesToScrape && pageEnd == false); page++) {
 
       let authHeader = Cypress.env('bearerToken')
 
@@ -74,11 +74,11 @@ describe('Scrape Super Saver items via API', () => {
                 //push to items object
                 items.push({
                   Category: category,
-                  Title: title,
-                  NormalPrice: normalPrice,
-                  DiscountPercent: percentageDiscount,
-                  ActualPrice: actualPrice,
-                  Savings: savings,
+                  Product: title,
+                  NormalPrice: "€"+normalPrice,
+                  Discount: Math.round(percentageDiscount)+ "% off",
+                  ActualPrice: "€"+actualPrice,
+                  Savings: "€"+savings,
                 })
               }
 
@@ -106,7 +106,7 @@ describe('Scrape Super Saver items via API', () => {
     let pageEnd = false;
 
 
-    for (let page = 1; page <= pagesToScrape && !pageEnd; page++) {
+    for (let page = 1; (page <= pagesToScrape && pageEnd == false); page++) {
 
       let authHeader = Cypress.env('bearerToken')
 
@@ -154,11 +154,11 @@ describe('Scrape Super Saver items via API', () => {
                 //push to items object
                 items.push({
                   Category: category,
-                  Title: title,
-                  NormalPrice: normalPrice,
-                  DiscountPercent: percentageDiscount,
-                  ActualPrice: actualPrice,
-                  Savings: savings,
+                  Product: title,
+                  NormalPrice: "€"+normalPrice,
+                  Discount: Math.round(percentageDiscount)+ "% off",
+                  ActualPrice:"€"+ actualPrice,
+                  Savings: "€"+savings,
                 })
               }
 
