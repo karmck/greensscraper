@@ -3,7 +3,7 @@ h3 a b {
 }
 
 div.dataTables_paginate span {
-    display: none;
+    display: none!important;
 }
 
 .product-image-img {
