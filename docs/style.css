@@ -1,3 +1,6 @@
+h3 a b {
+    color: blue;
+}
 .product-image-img {
     width: 120px;
 }
@@ -12,8 +15,8 @@
 }
 
 table.fixedHeader-floating {
-    position: fixed !important;
-    background-color: white
+    position: relative !important;
+    background-color: grey
 }
 
 table.fixedHeader-floating.no-footer {
