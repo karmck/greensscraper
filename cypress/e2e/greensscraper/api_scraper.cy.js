@@ -57,7 +57,7 @@ describe('Scrape Super Saver items via API', () => {
               title = "<a href='" + link + "' target='_blank'>"+title+"</a>";
               let imgFolder = json.ProductList[i].Image.match(/products\/([0-9]*)?/)[0].split("/")[1];
               let imgURL = "https://www.greens.com.mt/media/products/"+imgFolder+"/"+json.ProductList[i].ProductDetails.PART_NUMBER+".jpg";
-              let img = "<a href='"+link+"' target='_blank'><img class='product-image-img' src='"+imgURL+"'/></a>"
+              let img = "<a href='"+link+"' target='_blank'><img class='product-image-img' src='"+imgURL+"' loading='lazy'/></a>"
 
               //calculate percentage discount off
               let discountString = offerText.match(/\€ \d+(\.\d{1,2})?/gm)[0];
@@ -141,7 +141,7 @@ describe('Scrape Super Saver items via API', () => {
               title = "<a href='" + link + "' target='_blank'>"+title+"</a>";
               let imgFolder = json.ProductList[i].Image.match(/products\/([0-9]*)?/)[0].split("/")[1];
               let imgURL = "https://www.greens.com.mt/media/products/"+imgFolder+"/"+json.ProductList[i].ProductDetails.PART_NUMBER+".jpg";
-              let img = "<a href='"+link+"' target='_blank'><img class='product-image-img' src='"+imgURL+"'/></a>"
+              let img = "<a href='"+link+"' target='_blank'><img class='product-image-img' src='"+imgURL+"' loading='lazy'/></a>"
 
               //calculate percentage discount off
               let discountString = offerText.match(/\€ \d+(\.\d{1,2})?/gm)[0];
