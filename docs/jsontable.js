@@ -44,8 +44,8 @@ function jsonToTable(file){
                         type: 'column'
                     }
                 },
-                order: [[4, "desc"]],
-                pageLength: 100,
+                order: [[5, "desc"]],
+                pageLength: 50,
                 columnDefs: [
                     {
                         className: 'dtr-control',
@@ -53,8 +53,9 @@ function jsonToTable(file){
                         targets: 0
                     },
                     { responsivePriority: 1, targets: 2 },
-                    { responsivePriority: 2, targets: 4 },
-                    { responsivePriority: 3, targets: 5 }
+                    { responsivePriority: 2, targets: 5 },
+                    { responsivePriority: 3, targets: 3 },
+                    { responsivePriority: 4, targets: 6 }
                 ],
                 fixedHeader: {
                     header: true,
