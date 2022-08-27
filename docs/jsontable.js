@@ -36,6 +36,7 @@ function jsonToTable(file){
     .then(() => {
         $(document).ready(function () {
             var table = $('#display_json_data').DataTable({
+                deferRender: true,
                 rowReorder: {
                     selector: 'td:nth-child(2)'
                 },
