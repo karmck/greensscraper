@@ -16,7 +16,7 @@ h3 a b {
 
 table.fixedHeader-floating {
     position: relative !important;
-    background-color: grey
+    background-color: lightgray
 }
 
 table.fixedHeader-floating.no-footer {
