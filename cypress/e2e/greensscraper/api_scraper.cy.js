@@ -24,8 +24,9 @@ describe('Scrape Super Saver items via API', () => {
 
     let items = [];
     let pagesToScrape = 30;
+    let pageEnd = false;
 
-    for (let page = 1; page <= pagesToScrape; page++) {
+    for (let page = 1; page <= pagesToScrape && !pageEnd; page++) {
 
       let authHeader = Cypress.env('bearerToken')
 
@@ -43,6 +44,7 @@ describe('Scrape Super Saver items via API', () => {
 
           let json = response.body;
           var productCount = Object.keys(json.ProductList).length;
+          pageEnd = response.body.pageEnd;
 
           for (let i = 0; i < productCount; i++) {
 
@@ -53,7 +55,9 @@ describe('Scrape Super Saver items via API', () => {
               let normalPrice = json.ProductList[i].ProductDetails.SALES_PRICE_RRP;
               let offerText = json.ProductList[i].OfferText;
               let link = "http://www.greens.com.mt/" + "productdetails?pid=" + json.ProductList[i].ProductDetails.PART_NUMBER;
-              link = "<a href='" + link + "' target='_blank'>Product Page</a>"
+              // link = "<a href='" + link + "' target='_blank'>Product Page</a>";
+              title = "<a href='" + link + "' target='_blank'>"+title+"</a>";
+
 
               //calculate percentage discount off
               let discountString = offerText.match(/\€ \d+(\.\d{1,2})?/gm)[0];
@@ -66,7 +70,7 @@ describe('Scrape Super Saver items via API', () => {
               //calculate savings
               let savings = (normalPrice - actualPrice).toFixed(2);
 
-              if (percentageDiscount >= 10) {
+              if (percentageDiscount >= 15) {
                 //push to items object
                 items.push({
                   Category: category,
@@ -75,7 +79,6 @@ describe('Scrape Super Saver items via API', () => {
                   DiscountPercent: percentageDiscount,
                   ActualPrice: actualPrice,
                   Savings: savings,
-                  Link: link,
                 })
               }
 
@@ -100,8 +103,10 @@ describe('Scrape Super Saver items via API', () => {
 
     let items = [];
     let pagesToScrape = 50;
+    let pageEnd = false;
 
-    for (let page = 1; page <= pagesToScrape; page++) {
+
+    for (let page = 1; page <= pagesToScrape && !pageEnd; page++) {
 
       let authHeader = Cypress.env('bearerToken')
 
@@ -119,6 +124,8 @@ describe('Scrape Super Saver items via API', () => {
 
           let json = response.body;
           var productCount = Object.keys(json.ProductList).length;
+          pageEnd = response.body.pageEnd;
+
 
           for (let i = 0; i < productCount; i++) {
 
@@ -129,7 +136,8 @@ describe('Scrape Super Saver items via API', () => {
               let normalPrice = json.ProductList[i].ProductDetails.SALES_PRICE_RRP;
               let offerText = json.ProductList[i].OfferText;
               let link = "http://www.greens.com.mt/" + "productdetails?pid=" + json.ProductList[i].ProductDetails.PART_NUMBER;
-              link = "<a href='" + link + "' target='_blank'>Product Page</a>"
+              // link = "<a href='" + link + "' target='_blank'>Product Page</a>";
+              title = "<a href='" + link + "' target='_blank'>"+title+"</a>";
 
               //calculate percentage discount off
               let discountString = offerText.match(/\€ \d+(\.\d{1,2})?/gm)[0];
@@ -142,7 +150,7 @@ describe('Scrape Super Saver items via API', () => {
               //calculate savings
               let savings = (normalPrice - actualPrice).toFixed(2);
 
-              if (percentageDiscount >= 10) {
+              if (percentageDiscount >= 15) {
                 //push to items object
                 items.push({
                   Category: category,
@@ -151,7 +159,6 @@ describe('Scrape Super Saver items via API', () => {
                   DiscountPercent: percentageDiscount,
                   ActualPrice: actualPrice,
                   Savings: savings,
-                  Link: link,
                 })
               }
 
