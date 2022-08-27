@@ -1,0 +1,51 @@
+#display_json_data_length {
+    display: none;
+}
+
+#display_json_data_filter {
+    margin-bottom: 2em;
+    float: left;
+}
+
+table.fixedHeader-floating {
+    position: fixed !important;
+    background-color: white
+}
+
+table.fixedHeader-floating.no-footer {
+    border-bottom-width: 0
+}
+
+table.fixedHeader-locked {
+    position: absolute !important;
+    background-color: white
+}
+
+
+
+
+.dataTables_scrollHeadInner {
+
+    margin-left: 0px;
+
+    width: 100% !important;
+
+    position: fixed;
+
+    display: block;
+
+    overflow: hidden;
+
+    margin-right: 30px;
+
+    background: white;
+
+    z-index: 1000;
+
+}
+
+.dataTables_scrollBody {
+
+    padding-top: 110px;
+
+}

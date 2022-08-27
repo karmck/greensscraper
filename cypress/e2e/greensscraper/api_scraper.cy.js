@@ -1,7 +1,5 @@
 describe('Scrape Super Saver items via API', () => {
 
-
-
   it('gets the token', () => {
 
     cy.visit('https://www.greens.com.mt');
@@ -57,7 +55,8 @@ describe('Scrape Super Saver items via API', () => {
               let link = "http://www.greens.com.mt/" + "productdetails?pid=" + json.ProductList[i].ProductDetails.PART_NUMBER;
               // link = "<a href='" + link + "' target='_blank'>Product Page</a>";
               title = "<a href='" + link + "' target='_blank'>"+title+"</a>";
-
+              let imgFolder = json.ProductList[i].Image.match(/products\/([0-9]*)?/)[0].split("/")[1];
+              let img = "https://www.greens.com.mt/media/products/"+imgFolder+"/"+json.ProductList[i].ProductDetails.PART_NUMBER+".jpg";
 
               //calculate percentage discount off
               let discountString = offerText.match(/\€ \d+(\.\d{1,2})?/gm)[0];
@@ -75,6 +74,7 @@ describe('Scrape Super Saver items via API', () => {
                 items.push({
                   Category: category,
                   Product: title,
+                  Image: img,
                   NormalPrice: "€"+normalPrice,
                   Discount: Math.round(percentageDiscount)+ "% off",
                   ActualPrice: "€"+actualPrice,
@@ -138,6 +138,8 @@ describe('Scrape Super Saver items via API', () => {
               let link = "http://www.greens.com.mt/" + "productdetails?pid=" + json.ProductList[i].ProductDetails.PART_NUMBER;
               // link = "<a href='" + link + "' target='_blank'>Product Page</a>";
               title = "<a href='" + link + "' target='_blank'>"+title+"</a>";
+              let imgFolder = json.ProductList[i].Image.match(/products\/([0-9]*)?/)[0].split("/")[1];
+              let img = "https://www.greens.com.mt/media/products/"+imgFolder+"/"+json.ProductList[i].ProductDetails.PART_NUMBER+".jpg";
 
               //calculate percentage discount off
               let discountString = offerText.match(/\€ \d+(\.\d{1,2})?/gm)[0];
@@ -155,6 +157,7 @@ describe('Scrape Super Saver items via API', () => {
                 items.push({
                   Category: category,
                   Product: title,
+                  Image: img,
                   NormalPrice: "€"+normalPrice,
                   Discount: Math.round(percentageDiscount)+ "% off",
                   ActualPrice:"€"+ actualPrice,
