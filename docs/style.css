@@ -1,6 +1,11 @@
 h3 a b {
     color: blue;
 }
+
+div.dataTables_paginate span {
+    display: none;
+}
+
 .product-image-img {
     width: 120px;
 }
