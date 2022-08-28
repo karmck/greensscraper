@@ -103,7 +103,7 @@ Cypress.Commands.add('scrapeAndSave', (category, fileName, productListType, numO
           cy.task('log', items.length + " items collected in total after page " + page);
           cy.task('log', "Writing " + items.length + " items to file after page " + page);
           cy.writeFile('docs/'+fileName+'.json', JSON.stringify(items));
-          cy.writeFile('docs/lastupdate.txt', new Date().toLocaleDateString('en-GB'));
+          cy.writeFile('docs/lastupdate.txt', new Date().toLocaleString('en-GB'));
           
         });
 
