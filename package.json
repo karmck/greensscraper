@@ -1,5 +1,7 @@
 {
   "scripts":{
+    "scrape": "npx cypress run",
+    "postscrape": "git add . && git commit -m 'Update' && git push",
     "publish": "git add . && git commit -m 'Update' && git push"
   },
   "devDependencies": {

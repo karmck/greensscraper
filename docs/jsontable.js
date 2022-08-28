@@ -1,3 +1,7 @@
+
+
+
+
 function jsonToTable(file){
 
     fetch('https://karmck.github.io/greensscraper/'+file)
@@ -36,13 +40,17 @@ function jsonToTable(file){
     .then(() => {
         $(document).ready(function () {
             var table = $('#display_json_data').DataTable({
+                // dom: 'lpftrip',
                 deferRender: true,
                 rowReorder: {
                     selector: 'td:nth-child(2)'
                 },
                 responsive: {
                     details: {
-                        type: 'column'
+                        // type: 'column',
+                        display: $.fn.dataTable.Responsive.display.childRowImmediate,
+                        type: 'inline'
+                        // type: ''
                     }
                 },
                 order: [[5, "desc"]],
@@ -56,7 +64,8 @@ function jsonToTable(file){
                     { responsivePriority: 1, targets: 2 },
                     { responsivePriority: 2, targets: 5 },
                     { responsivePriority: 3, targets: 3 },
-                    { responsivePriority: 4, targets: 6 }
+                    { responsivePriority: 4, targets: 6 },
+                    { responsivePriority: 5, targets: 1 }
                 ],
                 fixedHeader: {
                     header: true,

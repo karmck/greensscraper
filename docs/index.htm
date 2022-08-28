@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Greens Scraper for Alcohol discounts</title>
+    <title>Greens Super Saver Discount Scraper</title>
 
     <!-- ✅ Load My CSS  -->
     <link href="style.css" rel="stylesheet">
@@ -44,7 +44,7 @@
         <h2>Greens Super Saver Offers</h2>
         <br>
         <h3><a href="index.htm"><b>Drinks</b></a> | <a href="general.htm">All Items</a></h3>
-        <br>
+        
         <!-- table to display the json data -->
         <table id="display_json_data" class="display" cellspacing="0" style="width:100%">
         </table>
@@ -55,9 +55,14 @@
 </body>
 
 </html>
-<!-- ✅ call jsonTable function and pass file name for this page ✅ -->
 <script>
     $(document).ready(function () {
-        jsonToTable("data_drinks.json");
+    jsonToTable("data_drinks.json");
+
+    $('#display_json_data').on('page.dt', function () {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 300);
     });
+});
 </script>

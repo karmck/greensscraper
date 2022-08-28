@@ -1,5 +1,25 @@
+h2 {
+    margin-top: .5rem!important;
+}
+
 h3 a b {
     color: blue;
+}
+
+[data-dtr-index="1"] .dtr-title, [data-dtr-index="3"] .dtr-title {
+    display: none;
+}
+
+[data-dtr-index="1"] span, [data-dtr-index="3"] span {
+    font-weight: bold;
+}
+
+.dtr-details{
+    list-style-type: none!important;
+}
+
+#display_json_data_filter {
+    margin-top: 2em;
 }
 
 div.dataTables_paginate span {
