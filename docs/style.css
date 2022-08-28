@@ -19,6 +19,14 @@ h3 a b {
     color: blue;
 }
 
+[data-dtr-index="5"] {
+    color: green;
+}
+
+[data-dtr-index="7"] {
+    color: grey;
+}
+
 .dtr-details{
     list-style-type: none!important;
 }
@@ -45,7 +53,6 @@ div.dataTables_paginate span {
 }
 
 table.fixedHeader-floating {
-    position: relative !important;
     background-color: lightgray
 }
 
@@ -54,35 +61,17 @@ table.fixedHeader-floating.no-footer {
 }
 
 table.fixedHeader-locked {
-    position: absolute !important;
     background-color: white
 }
 
+#display_json_data td:nth-of-type(6) {
+    color:green;
+  }
 
+#display_json_data td:nth-of-type(7) {
+    color:blue;
+  }
 
-
-.dataTables_scrollHeadInner {
-
-    margin-left: 0px;
-
-    width: 100% !important;
-
-    position: fixed;
-
-    display: block;
-
-    overflow: hidden;
-
-    margin-right: 30px;
-
-    background: white;
-
-    z-index: 1000;
-
-}
-
-.dataTables_scrollBody {
-
-    padding-top: 110px;
-
-}
+  #display_json_data td:nth-of-type(8) {
+    color:grey;
+  }
