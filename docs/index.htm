@@ -35,7 +35,7 @@
         referrerpolicy="no-referrer"></script>
 
     <!-- ✅ load jsontable js ✅ -->
-    <script src="jsontable.js"></script>
+    <script src="ajaxtable.js"></script>
 
 </head>
 
@@ -43,10 +43,23 @@
     <div class="container-fluid">
         <h2>Greens Super Saver Offers</h2>
         <p id="lastUpdated"></p>
-        <h3><a href="index.htm"><b>Drinks</b></a> | <a href="general.htm">All Items</a></h3>
+        <h3><a href="#" id='drinksLink'>Drinks</a> | <a href="#" id='allItemsLink'>All Items</a></h3>
         <!-- table to display the json data -->
-        <table id="display_json_data" class="display" cellspacing="0" style="width:100%">
+        
+        <table id="display_json_data" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Product</th>
+                    <th>Image</th>
+                    <th>Normal Price</th>
+                    <th>Discount</th>
+                    <th>Actual Price</th>
+                    <th>Savings</th>
+                </tr>
+            </thead>
         </table>
+
     </div>
 </body>
 
