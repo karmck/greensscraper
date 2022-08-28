@@ -42,27 +42,26 @@
 <body>
     <div class="container-fluid">
         <h2>Greens Super Saver Offers</h2>
-        <br>
+        <p id="lastUpdated"></p>
         <h3><a href="index.htm"><b>Drinks</b></a> | <a href="general.htm">All Items</a></h3>
-        
         <!-- table to display the json data -->
         <table id="display_json_data" class="display" cellspacing="0" style="width:100%">
         </table>
     </div>
-
-
-
 </body>
 
 </html>
 <script>
     $(document).ready(function () {
-    jsonToTable("data_drinks.json");
 
-    $('#display_json_data').on('page.dt', function () {
-        $('html, body').animate({
-            scrollTop: 0
-        }, 300);
+        readLastUpdatedTextFile("lastupdate.txt");
+
+        jsonToTable("data_drinks.json");
+
+        $('#display_json_data').on('page.dt', function () {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 300);
+        });
     });
-});
 </script>

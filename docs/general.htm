@@ -42,9 +42,8 @@
 <body>
     <div class="container-fluid">
         <h2>Greens Super Saver Offers</h2>
-        <br>
+        <p id="lastUpdated"></p>
         <h3><a href="index.htm">Drinks</a> | <a href="general.htm"><b>All Items</b></a> </h3>
-        
         <!-- table to display the json data -->
         <table id="display_json_data" class="display" cellspacing="0" style="width:100%">
         </table>
@@ -56,6 +55,9 @@
 </html>
 <script>
 $(document).ready(function () {
+
+    readLastUpdatedTextFile("lastupdate.txt");
+
     jsonToTable("data_general.json");
 
     $('#display_json_data').on('page.dt', function () {
