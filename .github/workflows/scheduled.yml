@@ -1,5 +1,7 @@
-name: Scrape on push
-on: [push]
+name: Scrape on schedule
+on:
+  schedule:
+    - cron: '55 * * * *'
 jobs:
   cypress-run:
     runs-on: ubuntu-20.04
