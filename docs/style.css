@@ -14,6 +14,11 @@ h3 a b {
     font-weight: bold;
 }
 
+[data-dtr-index="6"] {
+    font-weight: bold;
+    color: blue;
+}
+
 .dtr-details{
     list-style-type: none!important;
 }
