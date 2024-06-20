@@ -3,7 +3,7 @@ describe('Scrape Super Saver items via API', () => {
   it('gets the token', () => {
 
     cy.visit('https://www.greens.com.mt');
-    cy.get(".country").contains("Malta").click({ force: true });
+    //cy.get(".country").contains("Malta").click({ force: true });
     cy.intercept('**/retail/**').as('products');
 
     cy.visit('https://www.greens.com.mt/products?cat=winecellar')
