@@ -12,6 +12,7 @@ describe('Scrape Super Saver items via API', () => {
 
         let authHeader = JSON.stringify(xhr.request.headers.authorization).split(" ")[1].split('"')[0];
         Cypress.env('bearerToken', authHeader)
+        cy.log('bearerToken: '+Cypress.env('bearerToken'))
 
       });
 
