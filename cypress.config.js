@@ -3,11 +3,22 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   chromeWebSecurity: false,
-  video: true,
+  video: false,
   pageLoadTimeout: 240000,
+  defaultCommandTimeout: 10000,
   e2e: {
     setupNodeEvents(on, config) {
       // implement node event listeners here
+
+      on('task', {
+        log(message) {
+          console.log(message)
+      
+          return null
+        },
+      })
+
+      
     },
   },
 });
