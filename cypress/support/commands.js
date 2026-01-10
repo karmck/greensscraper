@@ -58,7 +58,7 @@ Cypress.Commands.add('scrapeAndSave', (category, fileName, productListType, numO
         for (let i = 0; i < productCount; i++) {
 
 
-          if (json.ProductList[i].OfferType == "Super Saver") {
+          if (json.ProductList[i].OfferType == "Super Price") {
 
             let percentageDiscount, savings, actualPrice, discount, discountString = 0;
             let category = json.ProductList[i].ProductDetails.GROUP_3;
@@ -93,7 +93,7 @@ Cypress.Commands.add('scrapeAndSave', (category, fileName, productListType, numO
 
 
 
-            if (percentageDiscount >= 15) {
+            if (percentageDiscount >= 35) {
               //push to items object
               items.push({
                 Category: category,
