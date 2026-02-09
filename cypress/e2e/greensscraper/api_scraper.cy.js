@@ -20,14 +20,14 @@ describe('Scrape Super Saver items via API', () => {
 
   it('scrapes super saver drinks', () => {
 
-    cy.scrapeAndSave("winecellar", "data_drinks", "products", 10);
+    cy.scrapeAndSave("winecellar", "data_drinks", "products", 50);
 
 
   })
 
   it('scrapes super saver general items', () => {
 
-    cy.scrapeAndSave("", "data_general", "offers", 10);
+    cy.scrapeAndSave("", "data_general", "offers", 150);
 
 
   })
