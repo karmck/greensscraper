@@ -1,7 +1,7 @@
 function readLastUpdatedTextFile(file) {
 
 
-    fetch('https://karmck.github.io/greensscraper/'+file)
+    fetch('./' + file + '?v=' + Date.now(), { cache: 'no-store' })
         .then(response => response.text())
         .then(text => document.getElementById("lastUpdated").innerHTML = "Last updated: "+text)
 
@@ -9,7 +9,7 @@ function readLastUpdatedTextFile(file) {
 
 function jsonToTable(file) {
 
-    fetch('https://karmck.github.io/greensscraper/' + file)
+    fetch('./' + file + '?v=' + Date.now(), { cache: 'no-store' })
         .then(response => response.json())
         .then((data) => {
             console.log(data);
