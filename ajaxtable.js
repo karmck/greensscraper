@@ -1,6 +1,10 @@
+function cacheBustedUrl(file) {
+    return './' + file + '?v=' + Date.now();
+}
+
 function readLastUpdatedTextFile(file) {
 
-    fetch('https://karmck.github.io/greensscraper/' + file)
+    fetch(cacheBustedUrl(file), { cache: 'no-store' })
         .then(response => response.text())
         .then(text => document.getElementById("lastUpdated").innerHTML = "Last updated: " + text)
 }
@@ -10,14 +14,18 @@ function jsonToTable(file) {
 
     $(document).ready(function () {
 
+        // Ensure jQuery AJAX doesn't cache GET requests
+        $.ajaxSetup({ cache: false });
+
         if ($.fn.dataTable.isDataTable('#display_json_data')) {
             table = $('#display_json_data').DataTable();
         }
         else {
             table = $('#display_json_data').DataTable({
                 ajax: {
-                    url: 'https://karmck.github.io/greensscraper/' + file,
+                    url: cacheBustedUrl(file),
                     dataSrc: '',
+                    cache: false,
                 },
                 columns: [
                     { data: 'Category' },
@@ -66,12 +74,12 @@ function jsonToTable(file) {
 
 
         $("#allItemsLink").click(function () {
-            requestUrl = "https://karmck.github.io/greensscraper/data_general.json";
+            requestUrl = cacheBustedUrl("data_general.json");
             table.ajax.url(requestUrl).load();
         });
 
         $("#drinksLink").click(function () {
-            requestUrl = "https://karmck.github.io/greensscraper/data_drinks.json";
+            requestUrl = cacheBustedUrl("data_drinks.json");
             table.ajax.url(requestUrl).load();
         });
 
