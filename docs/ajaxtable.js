@@ -1,4 +1,8 @@
-const DEFAULT_DATASET = 'data_drinks.json';
+const DEFAULT_VIEW = 'drinks';
+const DATASETS = {
+    drinks: 'data_drinks.json',
+    all: 'data_general.json',
+};
 
 const tableState = {
     allRows: [],
@@ -86,6 +90,18 @@ function setActiveLink(activeLinkId) {
 
     drinksLink.classList.toggle('is-active', activeLinkId === 'drinksLink');
     allItemsLink.classList.toggle('is-active', activeLinkId === 'allItemsLink');
+}
+
+function getViewFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get('view');
+    return view === 'all' ? 'all' : 'drinks';
+}
+
+function updateUrlForView(view) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('view', view);
+    window.history.pushState({}, '', url);
 }
 
 function updateSortIndicators() {
@@ -261,19 +277,26 @@ function setupControls() {
 
     allItemsLink.addEventListener('click', (event) => {
         event.preventDefault();
+        const view = 'all';
         setActiveLink('allItemsLink');
-        loadDataset('data_general.json');
+        updateUrlForView(view);
+        loadDataset(DATASETS[view]);
     });
 
     drinksLink.addEventListener('click', (event) => {
         event.preventDefault();
+        const view = 'drinks';
         setActiveLink('drinksLink');
-        loadDataset('data_drinks.json');
+        updateUrlForView(view);
+        loadDataset(DATASETS[view]);
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     readLastUpdatedTextFile('lastupdate.txt');
     setupControls();
-    loadDataset(DEFAULT_DATASET);
+    const initialView = getViewFromUrl() || DEFAULT_VIEW;
+    const activeLinkId = initialView === 'all' ? 'allItemsLink' : 'drinksLink';
+    setActiveLink(activeLinkId);
+    loadDataset(DATASETS[initialView]);
 });
