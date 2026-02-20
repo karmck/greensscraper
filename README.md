@@ -1,35 +1,34 @@
 # Greens Super Saver Scraper
 
-A tiny Cypress-powered scraper that collects “Super Price” offers from greens.com.mt, saves the results as JSON under the docs/ folder, and serves them via a modern vanilla JavaScript page published on GitHub Pages.
+A Playwright-powered scraper that collects "Super Price" offers from greens.com.mt, saves the results as JSON under the docs/ folder, and serves them via a modern vanilla JavaScript page published on GitHub Pages.
 
 ## Overview
-- **Scraper:** Cypress test in [cypress/e2e/greensscraper/api_scraper.cy.js](cypress/e2e/greensscraper/api_scraper.cy.js)
-- **Custom command:** `scrapeAndSave()` in [cypress/support/commands.js](cypress/support/commands.js)
+- **Scraper:** Playwright script in [scrape.js](scrape.js)
 - **Outputs:** JSON files and timestamp in [docs/](docs) consumed by the web UI
 - **Web UI:** Vanilla JavaScript table in [docs/index.htm](docs/index.htm) using [docs/ajaxtable.js](docs/ajaxtable.js) and [docs/style.css](docs/style.css)
-- **Publish:** Push to the default branch; GitHub Pages serves the docs/ folder
+- **Automation:** GitHub Actions workflow runs on schedule (weekdays at 10:00 UTC)
 
 ## How It Works
 - **Auth discovery:**
-  - The test visits greens.com.mt and intercepts a `.../retail/...` XHR to capture the `Authorization: Bearer <token>` header, storing it in `Cypress.env('bearerToken')`.
-  - See token capture in [api_scraper.cy.js](cypress/e2e/greensscraper/api_scraper.cy.js).
+  - The scraper launches a headless browser, visits greens.com.mt, and intercepts API requests to capture the `Authorization: Bearer <token>` header.
+  - See token capture in [scrape.js](scrape.js).
 - **API scraping:**
-  - `scrapeAndSave(category, fileName, productListType, numOfPages)` issues paged GET requests to `https://www.greens.com.mt/apiservices/retail/sync/productlist` with the captured Bearer token.
+  - `scrapeAndSave(category, fileName, productListType, maxPages)` issues paged GET requests to `https://www.greens.com.mt/apiservices/retail/sync/productlist` with the captured Bearer token.
   - For each page, it filters items where `OfferType === "Super Price"`, computes discount %, actual price, and savings, then keeps only items with at least 35% off.
-  - Results are appended to an array and written to:
+  - Results are written to:
     - [docs/<fileName>.json](docs) as an array of rows (Category, Product, Image, NormalPrice, Discount, ActualPrice, Savings)
     - [docs/lastupdate.txt](docs) with a human-readable timestamp
-  - Implementation in `scrapeAndSave()` within [cypress/support/commands.js](cypress/support/commands.js).
-- **What’s scraped by default:**
-  - Drinks “winecellar” category to [docs/data_drinks.json](docs/data_drinks.json) using `productListType = products` and `numOfPages = 50`.
-  - General “offers” to [docs/data_general.json](docs/data_general.json) using `productListType = offers` and `numOfPages = 150`.
+  - Implementation in [scrape.js](scrape.js).
+- **What's scraped by default:**
+  - Drinks "winecellar" category to [docs/data_drinks.json](docs/data_drinks.json) using `productListType = products` and `maxPages = 50`.
+  - General "offers" to [docs/data_general.json](docs/data_general.json) using `productListType = offers` and `maxPages = 150`.
 - **Web publishing:**
   - [docs/index.htm](docs/index.htm) + [docs/ajaxtable.js](docs/ajaxtable.js) load JSON and render a searchable, sortable, paginated table with quick dataset switches (Drinks | All Items).
   - The UI also displays the last update time from [docs/lastupdate.txt](docs/lastupdate.txt).
   - The UI is dark green themed and does not rely on Bootstrap, jQuery, or DataTables.
 
 ## Requirements
-- **Node.js** 16+ (18+ recommended)
+- **Node.js** 18+ (20+ recommended)
 - **Git** with access to push to the repository
 
 ## Install
@@ -38,22 +37,18 @@ npm install
 ```
 
 ## Run The Scraper
-- **Headless run (default):**
-  - Runs Cypress tests that scrape and write JSON/lastupdate to docs/
 ```bash
 npm run scrape
 ```
-- **Open Cypress (debug/interactive):**
-```bash
-npx cypress open
-```
-- After a successful run, confirm the updated files:
-  - [docs/data_drinks.json](docs/data_drinks.json)
-  - [docs/data_general.json](docs/data_general.json)
-  - [docs/lastupdate.txt](docs/lastupdate.txt)
+Runs Playwright scraper headlessly. Outputs JSON to `docs/data_drinks.json` and `docs/data_general.json`.
+
+After a successful run, confirm the updated files:
+- [docs/data_drinks.json](docs/data_drinks.json)
+- [docs/data_general.json](docs/data_general.json)
+- [docs/lastupdate.txt](docs/lastupdate.txt)
 
 ## Publish To GitHub Pages
-- This project serves static files from the repo’s docs/ folder.
+- This project serves static files from the repo's docs/ folder.
 - One-time repo configuration:
   - In GitHub: Settings → Pages → Source → select `Deploy from a branch`
   - Branch: your default branch (e.g., `main`), Folder: `/docs`
@@ -97,7 +92,7 @@ Example selectors:
 - **Target file:** Second argument becomes the JSON file name under docs/.
 - **Product list type:** Third argument: `"products"` or `"offers"`.
 - **Pages:** Fourth argument controls how many pages to fetch.
-- Adjust calls in [api_scraper.cy.js](cypress/e2e/greensscraper/api_scraper.cy.js) to change scope.
+- Adjust calls in [scrape.js](scrape.js) to change scope.
 - The filter threshold (≥ 35% off) is inside `scrapeAndSave()` — change the value if needed.
 
 ## Data Format
@@ -111,28 +106,30 @@ Example selectors:
   - ActualPrice: `€<value>`
   - Savings: `€<value>`
 
+## Automation
+- GitHub Actions workflow runs on schedule (weekdays at 10:00 UTC)
+- Manual trigger: GitHub → Actions → Scrape on schedule → Run workflow
+- See [.github/workflows/scheduled.yml](.github/workflows/scheduled.yml)
+
 ## Troubleshooting
 - **No items collected:**
-  - The site/API or auth flow may have changed. Re-run in headed mode (`npx cypress open`) and watch the token capture.
-  - Ensure `chromeWebSecurity` is disabled (set in [cypress.config.js](cypress.config.js)).
-- **CORS/blocked requests:**
-  - Headed mode with a real browser can help. Also ensure the intercept alias resolves before scraping.
+  - The site/API or auth flow may have changed. Check if greens.com.mt structure changed.
+  - Run `npm run scrape` locally to debug.
 - **Pages shows no data:**
   - Confirm GitHub Pages is enabled and the docs/ JSON files exist on the branch that Pages deploys.
   - Confirm your Pages deployment includes the updated [docs/index.htm](docs/index.htm), [docs/ajaxtable.js](docs/ajaxtable.js), and [docs/style.css](docs/style.css).
 
 ## Project Structure
-- [cypress/e2e/greensscraper/api_scraper.cy.js](cypress/e2e/greensscraper/api_scraper.cy.js): Entry test; captures token and invokes scrapes
-- [cypress/support/commands.js](cypress/support/commands.js): Implements `scrapeAndSave()` and helpers
+- [scrape.js](scrape.js): Playwright scraper; captures token and runs scrapes
 - [docs/](docs): Static site + scraped data consumed by the UI
   - [docs/index.htm](docs/index.htm): Main static page and table controls
   - [docs/ajaxtable.js](docs/ajaxtable.js): Vanilla JS table rendering, sorting/filtering/pagination, dataset switch, scraper selectors
   - [docs/style.css](docs/style.css): Dark green UI theme
   - [docs/jsontable.js](docs/jsontable.js): Legacy/alternative renderer (not used by default)
   - [docs/data_drinks.json](docs/data_drinks.json), [docs/data_general.json](docs/data_general.json), [docs/lastupdate.txt](docs/lastupdate.txt): Generated content
-- [cypress.config.js](cypress.config.js): Cypress configuration and logging task
-- [package.json](package.json): Minimal scripts and Cypress dependency
+- [.github/workflows/scheduled.yml](.github/workflows/scheduled.yml): GitHub Actions workflow
+- [package.json](package.json): Scripts and Playwright dependency
 
 ## Notes
-- Respect the target site’s Terms of Service. Avoid unnecessary frequency; consider scheduling runs responsibly.
-- This repository does not include CI; you can add a scheduled GitHub Actions workflow to run `npm run scrape` and push changes on a cadence.
+- Respect the target site's Terms of Service. Avoid unnecessary frequency.
+- The scheduled workflow runs on weekdays at 10:00 UTC.

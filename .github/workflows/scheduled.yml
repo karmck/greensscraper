@@ -2,20 +2,32 @@ name: Scrape on schedule
 on:
   schedule:
     - cron: '0 10 * * 1-5'
-
   workflow_dispatch:
-  
+
 jobs:
-  cypress-run:
+  scrape:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Deploy Report
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run scraper
+        run: npm run scrape
+
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: docs
+          commit-message: 'Update scraped data'
