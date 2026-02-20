@@ -162,7 +162,7 @@ async function main() {
   console.log('\nScraping general offers...');
   await scrapeAndSave('', 'data_general', 'offers', 150, bearerToken);
 
-  const timestamp = new Date().toLocaleString('en-GB');
+  const timestamp = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Malta' });
   fs.writeFileSync(path.join(DOCS_DIR, 'lastupdate.txt'), timestamp);
 
   console.log('\nScraping complete!');
