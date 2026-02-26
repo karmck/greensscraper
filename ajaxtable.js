@@ -98,9 +98,38 @@ function getViewFromUrl() {
     return view === 'all' ? 'all' : 'drinks';
 }
 
+function getSortFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const sortKey = params.get('sortby');
+    const sortDirection = params.get('order');
+    return { sortKey, sortDirection };
+}
+
+function getSearchFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('search') || '';
+}
+
 function updateUrlForView(view) {
     const url = new URL(window.location.href);
     url.searchParams.set('view', view);
+    window.history.pushState({}, '', url);
+}
+
+function updateUrlForSearch(searchTerm) {
+    const url = new URL(window.location.href);
+    if (searchTerm) {
+        url.searchParams.set('search', searchTerm);
+    } else {
+        url.searchParams.delete('search');
+    }
+    window.history.pushState({}, '', url);
+}
+
+function updateUrlForSort(sortKey, sortDirection) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('sortby', sortKey);
+    url.searchParams.set('order', sortDirection);
     window.history.pushState({}, '', url);
 }
 
@@ -234,6 +263,7 @@ function setupControls() {
 
     searchInput.addEventListener('input', (event) => {
         tableState.searchTerm = event.target.value;
+        updateUrlForSearch(event.target.value);
         refreshTable(true);
     });
 
@@ -271,6 +301,7 @@ function setupControls() {
                 tableState.sortDirection = key === 'Discount' ? 'desc' : 'asc';
             }
 
+            updateUrlForSort(tableState.sortKey, tableState.sortDirection);
             refreshTable(true);
         });
     });
@@ -295,8 +326,25 @@ function setupControls() {
 document.addEventListener('DOMContentLoaded', () => {
     readLastUpdatedTextFile('lastupdate.txt');
     setupControls();
+    
     const initialView = getViewFromUrl() || DEFAULT_VIEW;
     const activeLinkId = initialView === 'all' ? 'allItemsLink' : 'drinksLink';
     setActiveLink(activeLinkId);
+    
+    const { sortKey, sortDirection } = getSortFromUrl();
+    if (sortKey && columns.some(c => c.key === sortKey)) {
+        tableState.sortKey = sortKey;
+    }
+    if (sortDirection === 'asc' || sortDirection === 'desc') {
+        tableState.sortDirection = sortDirection;
+    }
+    
+    const initialSearch = getSearchFromUrl();
+    const searchInput = document.getElementById('tableSearch');
+    if (initialSearch) {
+        tableState.searchTerm = initialSearch;
+        searchInput.value = initialSearch;
+    }
+    
     loadDataset(DATASETS[initialView]);
 });
