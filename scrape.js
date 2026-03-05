@@ -98,6 +98,8 @@ async function scrapeAndSave(category, fileName, productListType, maxPages, bear
   }
 
   await scrapePage(1);
+
+  return items.length;
 }
 
 async function getBearerToken() {
@@ -157,10 +159,15 @@ async function main() {
   console.log('Token obtained successfully');
 
   console.log('\nScraping drinks (winecellar category)...');
-  await scrapeAndSave('winecellar', 'data_drinks', 'products', 50, bearerToken);
+  const drinksCount = await scrapeAndSave('winecellar', 'data_drinks', 'products', 50, bearerToken);
 
   console.log('\nScraping general offers...');
-  await scrapeAndSave('', 'data_general', 'offers', 150, bearerToken);
+  const generalCount = await scrapeAndSave('', 'data_general', 'offers', 150, bearerToken);
+
+  if (drinksCount === 0 || generalCount === 0) {
+    console.error(`\nScraping failed: no items collected (drinks: ${drinksCount}, general: ${generalCount})`);
+    process.exit(1);
+  }
 
   const timestamp = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Malta' });
   fs.writeFileSync(path.join(DOCS_DIR, 'lastupdate.txt'), timestamp);
@@ -171,4 +178,7 @@ async function main() {
   console.log(`- docs/lastupdate.txt (${timestamp})`);
 }
 
-main().catch(console.error);
+main().catch((err) => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});
