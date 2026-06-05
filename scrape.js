@@ -63,13 +63,9 @@ async function scrapeAndSave(category, fileName, productListType, maxPages, bear
         "http://www.greens.com.mt/productdetails?pid=" +
         product.ProductDetails.PART_NUMBER;
 
-      let imgFolder =
-        product.Image?.match(/products\/([0-9]*)?/)?.[0]?.split("/")[1] || "";
-
-      let imgURL =
-        imgFolder
-          ? `https://www.greens.com.mt/media/products/${imgFolder}/${product.ProductDetails.PART_NUMBER}.jpg`
-          : "https://www.greens.com.mt/media/products/noimages.jpg";
+      const imgURL = product.ProductDetails.PART_NUMBER
+        ? `https://www.greens.com.mt/mediaproducts/webp/${product.ProductDetails.PART_NUMBER}.webp`
+        : "https://www.greens.com.mt/media/products/noimages.jpg";
 
       items.push({
         Category: product.ProductDetails.GROUP_3,
